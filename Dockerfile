@@ -22,25 +22,28 @@ RUN tar -xzf latest.tar.gz && rm -f latest.tar.gz
 
 # Configure NGINX
 RUN rm -f /etc/nginx/sites-enabled/default
-RUN cp /root/my_nginx.conf /etc/nginx/sites-available/localhost
-RUN ln -s /etc/nginx/sites-available/localhost /etc/nginx/sites-enabled/
+RUN mv /root/info.php /var/www/html
+RUN mv /root/index.html /var/www/html
+RUN mv /root/my_nginx.conf /etc/nginx/sites-available
+RUN ln -s /etc/nginx/sites-available/my_nginx.conf /etc/nginx/sites-enabled/
 # RUN service nginx restart
 
 # Configure MySQL db (MariaDb)
 RUN bash /root/mysqlconfig.sh
 
+# Configure PHPMyAdmin
+RUN cd /var/www/html/
+RUN wget https://files.phpmyadmin.net/phpMyAdmin/5.0.1/phpMyAdmin-5.0.1-english.tar.gz
+RUN tar -xf phpMyAdmin-5.0.1-english.tar.gz && rm -f phpMyAdmin-5.0.1-english.tar.gz
+RUN mv phpMyAdmin-5.0.1-english phpmyadmin
+RUN cp /root/config.inc.php /var/www/html/phpmyadmin/
 
-# RUN	service mysql start && \
-# # echo "create user 'rynosaurus'@'localhost' identified by '950207rex'" | mysql -u root --skip-password && \
-# echo "create database wordpress;"| mysql -u root --skip-password && \
-# echo "grant all privileges wordpress.* TO 'rynosaurus'@'localhost' with grant option;"| mysql -u root --skip-password && \
-# echo "FLUSH PRIVILEGES;"| mysql -u root --skip-password
-# RUN service mysql restart
+
 
 
 
 # Every DF needs a CMD line
-CMD tail -f /dev/null
+CMD service mysql start && service php7.3-fpm start && service nginx start
 
 
 # infallible_colden
