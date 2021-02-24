@@ -12,7 +12,7 @@ RUN apt-get -y update && apt-get -y upgrade && apt-get -y install wget  && apt-g
 # Install EMP (E = "E"NGINX, M = MariaDB & P = PHP)
 RUN apt-get -y install nginx
 RUN apt-get -y install mariadb-server
-RUN apt-get -y install php-fpm php-mysql
+RUN apt-get -y install php-fpm php-mysql php-cli php-mbstring php-gd php-cgi
 
 # Install WordPress
 # RUN mkdir /var/www/html/wordpress && cd /var/www/html/wordpress
@@ -32,18 +32,19 @@ RUN ln -s /etc/nginx/sites-available/my_nginx.conf /etc/nginx/sites-enabled/
 RUN bash /root/mysqlconfig.sh
 
 # Configure PHPMyAdmin
-RUN cd /var/www/html/
-RUN wget https://files.phpmyadmin.net/phpMyAdmin/5.0.1/phpMyAdmin-5.0.1-english.tar.gz
-RUN tar -xf phpMyAdmin-5.0.1-english.tar.gz && rm -f phpMyAdmin-5.0.1-english.tar.gz
-RUN mv phpMyAdmin-5.0.1-english phpmyadmin
-RUN cp /root/config.inc.php /var/www/html/phpmyadmin/
-
-
+RUN wget https://files.phpmyadmin.net/phpMyAdmin/5.0.4/phpMyAdmin-5.0.4-english.tar.gz
+RUN tar xzfv phpMyAdmin-5.0.4-english.tar.gz -C /root
+RUN mkdir /var/www/html/phpmyadmin
+RUN cp -a /root/phpMyAdmin-5.0.4-english/. /var/www/html/phpmyadmin/
+RUN rm -rf /root/phpMyAdmin-5.0.4-english
+RUN rm -rf phpMyAdmin-5.0.4-english.tar.gz
+RUN mv /root/config.inc.php /var/www/html/phpmyadmin
 
 
 
 # Every DF needs a CMD line
-CMD service mysql start && service php7.3-fpm start && service nginx start
+# CMD service mysql start && service php7.3-fpm start && service nginx start
+CMD tail -f /dev/null
 
 
 # infallible_colden
