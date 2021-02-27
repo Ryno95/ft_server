@@ -26,7 +26,7 @@ define( 'DB_NAME', 'wordpress' );
 define( 'DB_USER', 'rynosaurus' );
 
 /** MySQL database password */
-define( 'DB_PASSWORD', '950207rex' );
+define( 'DB_PASSWORD', '950207' );
 
 /** MySQL hostname */
 define( 'DB_HOST', 'localhost' );
