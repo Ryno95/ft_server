@@ -57,9 +57,9 @@ RUN chown -R www-data:www-data /var/www/*
 RUN chmod -R 755 /var/www/*
 
 # Every DF needs one and only one CMD line
-CMD tail -f /dev/null
+# CMD tail -f /dev/null
 # Start services and 
-# CMD service mysql restart && service php7.3-fpm start && nginx -g 'daemon off;'
+CMD service mysql restart && service php7.3-fpm start && nginx -g 'daemon off;'
 # service mysql restart && service php7.3-fpm restart && service nginx restart
 
 
